@@ -21,8 +21,8 @@
  * alt="npm version" height="18">
  * </a>
  *
- * isArrayBuffer module. Detect whether or not an object is an ArrayBuffer.
- * @version 1.0.0
+ * isArrayBuffer module. Detect whether or not an object is an ES6 ArrayBuffer.
+ * @version 1.0.1
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -34,28 +34,33 @@
 /*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:false, plusplus:true, maxparams:1, maxdepth:2,
-  maxstatements:16, maxcomplexity:9 */
+  es3:true, esnext:false, plusplus:true, maxparams:1, maxdepth:3,
+  maxstatements:8, maxcomplexity:4 */
 
 /*global module */
 
 ;(function () {
   'use strict';
 
-  var hasToStringTag = require('has-to-string-tag-x'),
-    hasArrayBuffer = typeof ArrayBuffer === 'function',
-    ES = require('es-abstract/es6'),
-    toStringTag = require('to-string-tag-x'),
+  var ES = require('es-abstract/es6'),
     isObjectLike = require('is-object-like-x'),
-    ARRAYBUFFER = hasArrayBuffer && ArrayBuffer,
+    ARRAYBUFFER = typeof ArrayBuffer === 'function' && ArrayBuffer,
     getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor,
     getPrototypeOf = Object.getPrototypeOf,
-    getterArrayBuffer;
+    getByteLength;
 
-  if (ARRAYBUFFER && hasToStringTag) {
-    getterArrayBuffer = getOwnPropertyDescriptor(
-      getPrototypeOf(new ARRAYBUFFER()), Symbol.toStringTag
-    ).get;
+  if (ARRAYBUFFER) {
+    try {
+      getByteLength = getOwnPropertyDescriptor(
+        getPrototypeOf(new ARRAYBUFFER(4)),
+        'byteLength'
+      ).get;
+      if (typeof ES.Call(getByteLength, new ARRAYBUFFER(4)) !== 'number') {
+        throw 'not a number';
+      }
+    } catch (ignore) {
+      ARRAYBUFFER = getByteLength = null;
+    }
   }
 
   /**
@@ -72,14 +77,11 @@
    * isArrayBuffer([]); // false
    */
   module.exports = function isArrayBuffer(object) {
-    if (!ARRAYBUFFER || !isObjectLike(object)) {
+    if (!getByteLength || !isObjectLike(object)) {
       return false;
     }
-    if (!hasToStringTag) {
-      return toStringTag(object) === '[object ArrayBuffer]';
-    }
     try {
-      return ES.Call(getterArrayBuffer, object) === ARRAYBUFFER;
+      return typeof ES.Call(getByteLength, object) === 'number';
     } catch (ignore) {}
     return false;
   };

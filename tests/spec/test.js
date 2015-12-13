@@ -3,28 +3,44 @@
 /*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:false, plusplus:true, maxparams:1, maxdepth:1,
-  maxstatements:11, maxcomplexity:4 */
+  es3:true, esnext:false, plusplus:true, maxparams:1, maxdepth:3,
+  maxstatements:19, maxcomplexity:7 */
 
 /*global expect, module, require, describe, xit, it, returnExports */
 
 (function () {
   'use strict';
 
-  var isArrayBuffer, hasArrayBuffer, ifHasArrayBuffer,
-    hasDataView, ifHasDataView;
+  var isArrayBuffer, hasArrayBuffer, ifHasArrayBuffer, getByteLength;
   if (typeof module === 'object' && module.exports) {
     require('es5-shim');
-    require('es5-shim/es5-sham.js');
+    require('es5-shim/es5-sham');
+    if (typeof JSON === 'undefined') {
+      JSON = {};
+    }
+    require('json3').runInContext(null, JSON);
+    require('es6-shim');
     isArrayBuffer = require('../../index.js');
   } else {
     isArrayBuffer = returnExports;
   }
 
-  hasArrayBuffer = typeof ArrayBuffer === 'function';
+  hasArrayBuffer = typeof DataView === 'function';
+  if (hasArrayBuffer) {
+    try {
+      getByteLength = Object.getOwnPropertyDescriptor(
+        Object.getPrototypeOf(new ArrayBuffer(4)),
+        'byteLength'
+      ).get;
+      if (typeof getByteLength.call(new ArrayBuffer(4)) !== 'number') {
+        throw 'not a number';
+      }
+    } catch (ignore) {
+      hasArrayBuffer = false;
+    }
+  }
+
   ifHasArrayBuffer = hasArrayBuffer ? it : xit;
-  hasDataView = hasArrayBuffer && typeof DataView === 'function';
-  ifHasDataView = hasDataView ? it : xit;
 
   describe('isArrayBuffer', function () {
     it('basic', function () {
@@ -47,10 +63,6 @@
       expect(isArrayBuffer(new Uint32Array(4))).toBe(false);
       expect(isArrayBuffer(new Float32Array(4))).toBe(false);
       expect(isArrayBuffer(new Float64Array(4))).toBe(false);
-    });
-
-    ifHasDataView('hasDataView', function () {
-      expect(isArrayBuffer(new DataView(new ArrayBuffer(4)))).toBe(false);
     });
   });
 }());

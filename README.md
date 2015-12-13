@@ -21,9 +21,9 @@ alt="devDependency status" height="18"/>
 alt="npm version" height="18">
 </a>
 
-isArrayBuffer module. Detect whether or not an object is an ArrayBuffer.
+isArrayBuffer module. Detect whether or not an object is an ES6 ArrayBuffer.
 
-**Version**: 1.0.0  
+**Version**: 1.0.1  
 **Author:** Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
