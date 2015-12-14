@@ -21,23 +21,25 @@ alt="devDependency status" height="18"/>
 alt="npm version" height="18">
 </a>
 
-isArrayBuffer module. Detect whether or not an object is an ES6 ArrayBuffer.
+isArrayBuffer module. Detect whether or not an object is an ES6 ArrayBuffer
+or a legacy Arraybuffer.
 
-**Version**: 1.0.1  
+**Version**: 1.0.2  
 **Author:** Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
 <a name="exp_module_is-array-buffer-x--module.exports"></a>
-### `module.exports(object)` ⇒ <code>boolean</code> ⏏
+### `module.exports(object, [es6])` ⇒ <code>boolean</code> ⏏
 Determine if an `object` is an `ArrayBuffer`.
 
 **Kind**: Exported function  
 **Returns**: <code>boolean</code> - `true` if the `object` is an `ArrayBuffer`,
  else false`.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| object | <code>\*</code> | The object to test. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| object | <code>\*</code> |  | The object to test. |
+| [es6] | <code>boolean</code> | <code>false</code> | If `true` then only ES6 ArrayBuffer objects  will be determined `true`. |
 
 **Example**  
 ```js

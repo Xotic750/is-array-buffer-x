@@ -11,7 +11,7 @@
 (function () {
   'use strict';
 
-  var isArrayBuffer, hasArrayBuffer, ifHasArrayBuffer, getByteLength;
+  var isArrayBuffer, ifHasArrayBuffer;
   if (typeof module === 'object' && module.exports) {
     require('es5-shim');
     require('es5-shim/es5-sham');
@@ -25,22 +25,7 @@
     isArrayBuffer = returnExports;
   }
 
-  hasArrayBuffer = typeof DataView === 'function';
-  if (hasArrayBuffer) {
-    try {
-      getByteLength = Object.getOwnPropertyDescriptor(
-        Object.getPrototypeOf(new ArrayBuffer(4)),
-        'byteLength'
-      ).get;
-      if (typeof getByteLength.call(new ArrayBuffer(4)) !== 'number') {
-        throw 'not a number';
-      }
-    } catch (ignore) {
-      hasArrayBuffer = false;
-    }
-  }
-
-  ifHasArrayBuffer = hasArrayBuffer ? it : xit;
+  ifHasArrayBuffer = typeof ArrayBuffer === 'function' ? it : xit;
 
   describe('isArrayBuffer', function () {
     it('basic', function () {
