@@ -6,7 +6,7 @@
   es3:true, esnext:false, plusplus:true, maxparams:1, maxdepth:3,
   maxstatements:19, maxcomplexity:7 */
 
-/*global expect, module, require, describe, xit, it, returnExports */
+/*global JSON:true, expect, module, require, describe, xit, it, returnExports */
 
 (function () {
   'use strict';

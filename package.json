@@ -1,6 +1,6 @@
 {
   "name": "is-array-buffer-x",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "isArrayBuffer module. Detect whether or not an object is an ES6 ArrayBuffer or a legacy Arraybuffer.",
   "homepage": "https://github.com/Xotic750/is-array-buffer-x",
   "author": {
@@ -29,13 +29,13 @@
     "url": "https://github.com/Xotic750/is-array-buffer-x/issues"
   },
   "dependencies": {
-    "is-object-like-x": "^1.0.0",
+    "is-object-like-x": "^1.0.1",
     "es-abstract": "^1.4.3",
-    "to-string-tag-x": "^1.0.0"
+    "to-string-tag-x": "^1.0.1"
   },
   "devDependencies": {
-    "es5-shim": "^4.4.0",
-    "es6-shim": "^0.33.13",
+    "es5-shim": "^4.4.1",
+    "es6-shim": "^0.34.0",
     "json3": "^3.3.2",
     "jscs": "^2.7.0",
     "uglify-js": "^2.6.1",
