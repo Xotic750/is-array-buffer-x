@@ -31,7 +31,7 @@
   "dependencies": {
     "is-object-like-x": "^1.0.1",
     "es-abstract": "^1.4.3",
-    "to-string-tag-x": "^1.0.1"
+    "to-string-tag-x": "^1.0.2"
   },
   "devDependencies": {
     "es5-shim": "^4.4.1",
