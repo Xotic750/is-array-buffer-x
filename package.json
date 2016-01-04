@@ -29,7 +29,7 @@
     "url": "https://github.com/Xotic750/is-array-buffer-x/issues"
   },
   "dependencies": {
-    "is-object-like-x": "^1.0.1",
+    "is-object-like-x": "^1.0.2",
     "es-abstract": "^1.4.3",
     "to-string-tag-x": "^1.0.1"
   },
