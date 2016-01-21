@@ -21,8 +21,7 @@
  * alt="npm version" height="18">
  * </a>
  *
- * isArrayBuffer module. Detect whether or not an object is an ES6 ArrayBuffer
- * or a legacy Arraybuffer.
+ * isArrayBuffer module. Detect whether or not an object is an Arraybuffer.
  *
  * <h2>ECMAScript compatibility shims for legacy JavaScript engines</h2>
  * `es5-shim.js` monkey-patches a JavaScript context to contain all EcmaScript 5
@@ -41,7 +40,7 @@
  * `es6.shim.js` provides compatibility shims so that legacy JavaScript engines
  * behave as closely as possible to ECMAScript 6 (Harmony).
  *
- * @version 1.0.6
+ * @version 1.0.7
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -53,33 +52,34 @@
 /*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:false, plusplus:true, maxparams:1, maxdepth:3,
-  maxstatements:8, maxcomplexity:6 */
+  es3:true, esnext:false, plusplus:true, maxparams:2, maxdepth:3,
+  maxstatements:14, maxcomplexity:6 */
 
 /*global module */
 
 ;(function () {
   'use strict';
 
-  var ES = require('es-abstract/es6'),
-    isObjectLike = require('is-object-like-x'),
-    toStringTag = require('to-string-tag-x'),
-    ARRAYBUFFER = typeof ArrayBuffer === 'function' && ArrayBuffer,
-    getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor,
-    getPrototypeOf = Object.getPrototypeOf,
-    getByteLength;
+  var isObjectLike = require('is-object-like-x');
+  var hasABuf = typeof ArrayBuffer === 'function';
+  var toStringTag, aBufTag, bLength;
 
-  if (ARRAYBUFFER) {
-    try {
-      getByteLength = getOwnPropertyDescriptor(
-        getPrototypeOf(new ARRAYBUFFER(4)),
-        'byteLength'
-      ).get;
-      if (typeof ES.Call(getByteLength, new ARRAYBUFFER(4)) !== 'number') {
-        throw 'not a number';
+  if (hasABuf) {
+    if (require('has-to-string-tag-x')) {
+      try {
+        bLength = Object.getOwnPropertyDescriptor(
+          ArrayBuffer.prototype,
+          'byteLength'
+        ).get;
+        bLength =
+          typeof bLength.call(new ArrayBuffer(4)) === 'number' && bLength;
+      } catch (ignore) {
+        bLength = null;
       }
-    } catch (ignore) {
-      getByteLength = null;
+    }
+    if (!bLength) {
+      toStringTag = require('to-string-tag-x');
+      aBufTag = '[object ArrayBuffer]';
     }
   }
 
@@ -87,8 +87,6 @@
    * Determine if an `object` is an `ArrayBuffer`.
    *
    * @param {*} object The object to test.
-   * @param {boolean} [es6=false] If `true` then only ES6 ArrayBuffer objects
-   *  will be determined `true`.
    * @return {boolean} `true` if the `object` is an `ArrayBuffer`,
    *  else false`.
    * @example
@@ -99,14 +97,14 @@
    * isArrayBuffer([]); // false
    */
   module.exports = function isArrayBuffer(object) {
-    if (!ARRAYBUFFER || !isObjectLike(object) || !getByteLength && arguments[1]) {
+    if (!hasABuf || !isObjectLike(object)) {
       return false;
     }
-    if (!getByteLength && !arguments[1]) {
-      return toStringTag(object) === '[object ArrayBuffer]';
+    if (!bLength) {
+      return toStringTag(object) === aBufTag;
     }
     try {
-      return typeof ES.Call(getByteLength, object) === 'number';
+      return typeof bLength.call(object) === 'number';
     } catch (ignore) {}
     return false;
   };
