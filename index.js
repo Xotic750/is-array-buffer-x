@@ -47,22 +47,27 @@
  * @module is-array-buffer-x
  */
 
-/*jslint maxlen:80, es6:false, white:true */
+/* jslint maxlen:80, es6:true, white:true */
 
-/*jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
-  freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
-  nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
-  es3:true, esnext:false, plusplus:true, maxparams:2, maxdepth:3,
-  maxstatements:14, maxcomplexity:6 */
+/* jshint bitwise:true, camelcase:true, curly:true, eqeqeq:true, forin:true,
+   freeze:true, futurehostile:true, latedef:true, newcap:true, nocomma:true,
+   nonbsp:true, singleGroups:true, strict:true, undef:true, unused:true,
+   es3:true, esnext:true, plusplus:true, maxparams:2, maxdepth:1,
+   maxstatements:2, maxcomplexity:2 */
 
-/*global module */
+/* eslint strict: 1, max-statements: 1 */
 
-;(function () {
+/* global module, ArrayBuffer */
+
+;(function () { // eslint-disable-line no-extra-semi
+
   'use strict';
 
   var isObjectLike = require('is-object-like-x');
   var hasABuf = typeof ArrayBuffer === 'function';
-  var toStringTag, aBufTag, bLength;
+  var toStringTag;
+  var aBufTag;
+  var bLength;
 
   if (hasABuf) {
     if (require('has-to-string-tag-x')) {
@@ -71,8 +76,7 @@
           ArrayBuffer.prototype,
           'byteLength'
         ).get;
-        bLength =
-          typeof bLength.call(new ArrayBuffer(4)) === 'number' && bLength;
+        bLength = typeof bLength.call(new ArrayBuffer(4)) === 'number' && bLength;
       } catch (ignore) {
         bLength = null;
       }
