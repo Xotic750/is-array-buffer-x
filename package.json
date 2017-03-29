@@ -1,6 +1,6 @@
 {
   "name": "is-array-buffer-x",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "isArrayBuffer module. Detect whether or not an object is an ArrayBuffer.",
   "homepage": "https://github.com/Xotic750/is-array-buffer-x",
   "author": {
