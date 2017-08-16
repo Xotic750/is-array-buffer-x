@@ -1,6 +1,6 @@
 /**
  * @file Detect whether or not an object is an ArrayBuffer.
- * @version 1.3.0
+ * @version 1.4.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
