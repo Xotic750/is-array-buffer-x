@@ -1,6 +1,6 @@
 /**
  * @file Detect whether or not an object is an ArrayBuffer.
- * @version 1.4.0
+ * @version 1.5.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -11,24 +11,30 @@
 
 'use strict';
 
+var attempt = require('attempt-x');
 var isObjectLike = require('is-object-like-x');
+var getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
 var hasABuf = typeof ArrayBuffer === 'function';
+var bLength = false;
 var toStringTag;
 var aBufTag;
-var bLength;
 
 if (hasABuf) {
   if (require('has-to-string-tag-x')) {
-    try {
-      bLength = Object.getOwnPropertyDescriptor(
-        ArrayBuffer.prototype,
-        'byteLength'
-      ).get;
-      bLength = typeof bLength.call(new ArrayBuffer(4)) === 'number' && bLength;
-    } catch (ignore) {}
+    var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
+    if (descriptor && typeof descriptor.get === 'function') {
+      var res = attempt(function () {
+        return new ArrayBuffer(4);
+      });
+
+      if (res.threw === false && isObjectLike(res.value)) {
+        res = attempt.call(res.value, descriptor.get);
+        bLength = res.threw === false && typeof res.value === 'number' && descriptor.get;
+      }
+    }
   }
 
-  if (Boolean(bLength) === false) {
+  if (bLength === false) {
     toStringTag = require('to-string-tag-x');
     aBufTag = '[object ArrayBuffer]';
   }
@@ -52,13 +58,10 @@ module.exports = function isArrayBuffer(object) {
     return false;
   }
 
-  if (Boolean(bLength) === false) {
+  if (bLength === false) {
     return toStringTag(object) === aBufTag;
   }
 
-  try {
-    return typeof bLength.call(object) === 'number';
-  } catch (ignore) {}
-
-  return false;
+  var result = attempt.call(object, bLength);
+  return result.threw === false && typeof result.value === 'number';
 };

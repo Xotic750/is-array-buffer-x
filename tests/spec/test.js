@@ -3,7 +3,7 @@
 /* global ArrayBuffer, Int16Array, Int32Array, Uint8Array, Uint16Array,
   Uint32Array, Float32Array, Float64Array */
 
-var isArrayBuffer, ifHasArrayBuffer;
+var isArrayBuffer;
 if (typeof module === 'object' && module.exports) {
   require('es5-shim');
   require('es5-shim/es5-sham');
@@ -24,7 +24,7 @@ if (typeof module === 'object' && module.exports) {
   isArrayBuffer = returnExports;
 }
 
-ifHasArrayBuffer = typeof ArrayBuffer === 'function' ? it : xit;
+var ifHasArrayBuffer = typeof ArrayBuffer === 'function' ? it : xit;
 
 describe('isArrayBuffer', function () {
   it('basic', function () {
