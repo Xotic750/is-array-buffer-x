@@ -1,6 +1,6 @@
 /**
  * @file Detect whether or not an object is an ArrayBuffer.
- * @version 1.5.0
+ * @version 1.6.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -13,7 +13,6 @@
 
 var attempt = require('attempt-x');
 var isObjectLike = require('is-object-like-x');
-var getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
 var hasABuf = typeof ArrayBuffer === 'function';
 var bLength = false;
 var toStringTag;
@@ -21,6 +20,7 @@ var aBufTag;
 
 if (hasABuf) {
   if (require('has-to-string-tag-x')) {
+    var getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
     var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
     if (descriptor && typeof descriptor.get === 'function') {
       var res = attempt(function () {
