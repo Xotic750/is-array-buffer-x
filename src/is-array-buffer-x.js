@@ -9,21 +9,21 @@
 
 /* global ArrayBuffer */
 
-'use strict';
+const attempt = require('attempt-x');
+const isObjectLike = require('is-object-like-x');
 
-var attempt = require('attempt-x');
-var isObjectLike = require('is-object-like-x');
-var hasABuf = typeof ArrayBuffer === 'function';
-var bLength = false;
-var toStringTag;
-var aBufTag;
+const hasABuf = typeof ArrayBuffer === 'function';
+let bLength = false;
+let toStringTag;
+let aBufTag;
 
 if (hasABuf) {
   if (require('has-to-string-tag-x')) {
-    var getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
-    var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
+    const getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
+    const descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
+
     if (descriptor && typeof descriptor.get === 'function') {
-      var res = attempt(function () {
+      let res = attempt(function() {
         return new ArrayBuffer(4);
       });
 
@@ -62,6 +62,7 @@ module.exports = function isArrayBuffer(object) {
     return toStringTag(object) === aBufTag;
   }
 
-  var result = attempt.call(object, bLength);
+  const result = attempt.call(object, bLength);
+
   return result.threw === false && typeof result.value === 'number';
 };
