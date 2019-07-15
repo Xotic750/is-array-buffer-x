@@ -51,7 +51,7 @@
     "attempt-x": "^2.0.4",
     "has-to-string-tag-x": "^2.0.4",
     "is-object-like-x": "^2.0.6",
-    "object-get-own-property-descriptor-x": "^3.2.0",
+    "object-get-own-property-descriptor-x": "^4.0.0",
     "to-string-tag-x": "^2.0.8"
   },
   "devDependencies": {
