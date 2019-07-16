@@ -30,6 +30,7 @@ const ifHasArrayBuffer = typeof ArrayBuffer === 'function' ? it : xit;
 
 describe('isArrayBuffer', function() {
   it('basic', function() {
+    expect.assertions(1);
     expect(isArrayBuffer()).toBe(false);
     expect(isArrayBuffer(undefined)).toBe(false);
     expect(isArrayBuffer(null)).toBe(false);

@@ -50,8 +50,8 @@
   "dependencies": {
     "attempt-x": "^2.0.5",
     "has-to-string-tag-x": "^2.0.5",
-    "is-object-like-x": "^2.0.7",
-    "object-get-own-property-descriptor-x": "^4.0.2",
+    "is-object-like-x": "^2.0.8",
+    "object-get-own-property-descriptor-x": "^4.0.3",
     "to-string-tag-x": "^2.0.9"
   },
   "devDependencies": {

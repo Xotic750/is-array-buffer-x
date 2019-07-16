@@ -9,8 +9,9 @@
 
 /* global ArrayBuffer */
 
-const attempt = require('attempt-x');
-const isObjectLike = require('is-object-like-x');
+import attempt from 'attempt-x';
+
+import isObjectLike from 'is-object-like-x';
 
 const hasABuf = typeof ArrayBuffer === 'function';
 let bLength = false;
@@ -53,7 +54,7 @@ if (hasABuf) {
  * isArrayBuffer(null); // false
  * isArrayBuffer([]); // false
  */
-module.exports = function isArrayBuffer(object) {
+export default function isArrayBuffer(object) {
   if (hasABuf === false || isObjectLike(object) === false) {
     return false;
   }
@@ -65,4 +66,4 @@ module.exports = function isArrayBuffer(object) {
   const result = attempt.call(object, bLength);
 
   return result.threw === false && typeof result.value === 'number';
-};
+}
