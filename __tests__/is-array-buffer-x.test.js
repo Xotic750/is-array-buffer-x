@@ -1,13 +1,10 @@
-/* global ArrayBuffer, Int16Array, Int32Array, Uint8Array, Uint16Array,
-  Uint32Array, Float32Array, Float64Array */
-
-let isArrayBuffer;
+import isArrayBuffer from '../src/is-array-buffer-x';
 
 const ifHasArrayBuffer = typeof ArrayBuffer === 'function' ? it : xit;
 
 describe('isArrayBuffer', function() {
   it('basic', function() {
-    expect.assertions(1) / expect(isArrayBuffer()).toBe(false);
+    expect.assertions(7);
     expect(isArrayBuffer(undefined)).toBe(false);
     expect(isArrayBuffer(null)).toBe(false);
     expect(isArrayBuffer(1)).toBe(false);
@@ -18,6 +15,7 @@ describe('isArrayBuffer', function() {
   });
 
   ifHasArrayBuffer('hasArrayBuffer', function() {
+    expect.assertions(8);
     expect(isArrayBuffer(new ArrayBuffer(4))).toBe(true);
     expect(isArrayBuffer(new Int16Array(4))).toBe(false);
     expect(isArrayBuffer(new Int32Array(4))).toBe(false);

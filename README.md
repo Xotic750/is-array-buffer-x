@@ -21,30 +21,29 @@
 <a name="module_is-array-buffer-x"></a>
 
 ## is-array-buffer-x
+
 Detect whether or not an object is an ArrayBuffer.
 
-**Version**: 1.7.0  
-**Author**: Xotic750 <Xotic750@gmail.com>  
-**License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
-**Copyright**: Xotic750  
 <a name="exp_module_is-array-buffer-x--module.exports"></a>
 
 ### `module.exports(object)` ⇒ <code>boolean</code> ⏏
+
 Determine if an `object` is an `ArrayBuffer`.
 
 **Kind**: Exported function  
 **Returns**: <code>boolean</code> - `true` if the `object` is an `ArrayBuffer`,
- else false`.  
+else false`.
 
-| Param | Type | Description |
-| --- | --- | --- |
+| Param  | Type            | Description         |
+| ------ | --------------- | ------------------- |
 | object | <code>\*</code> | The object to test. |
 
-**Example**  
-```js
-var isArrayBuffer = require('is-array-buffer-x');
+**Example**
 
-isArrayBuffer(new ArrayBuffer(4)); // true
-isArrayBuffer(null); // false
-isArrayBuffer([]); // false
+```js
+import isArrayBuffer from 'is-array-buffer-x';
+
+console.log(isArrayBuffer(new ArrayBuffer(4))); // true
+console.log(isArrayBuffer(null)); // false
+console.log(isArrayBuffer([])); // false
 ```
