@@ -1,12 +1,3 @@
-/**
- * @file Detect whether or not an object is an ArrayBuffer.
- * @version 1.7.0
- * @author Xotic750 <Xotic750@gmail.com>
- * @copyright  Xotic750
- * @license {@link <https://opensource.org/licenses/MIT> MIT}
- * @module is-array-buffer-x
- */
-
 /* global ArrayBuffer */
 
 import attempt from 'attempt-x';
@@ -47,12 +38,6 @@ if (hasABuf) {
  * @param {*} object - The object to test.
  * @returns {boolean} `true` if the `object` is an `ArrayBuffer`,
  *  else false`.
- * @example
- * var isArrayBuffer = require('is-array-buffer-x');
- *
- * isArrayBuffer(new ArrayBuffer(4)); // true
- * isArrayBuffer(null); // false
- * isArrayBuffer([]); // false
  */
 export default function isArrayBuffer(object) {
   if (hasABuf === false || isObjectLike(object) === false) {
