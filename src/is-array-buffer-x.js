@@ -34,7 +34,7 @@ if (hasABuf) {
  * @returns {boolean} `true` if the `object` is an `ArrayBuffer`,
  *  else false`.
  */
-export default function isArrayBuffer(object) {
+const isArrayBuffer = function isArrayBuffer(object) {
   if (hasABuf === false || isObjectLike(object) === false) {
     return false;
   }
@@ -46,4 +46,6 @@ export default function isArrayBuffer(object) {
   const result = attempt.call(object, bLength);
 
   return result.threw === false && typeof result.value === 'number';
-}
+};
+
+export default isArrayBuffer;

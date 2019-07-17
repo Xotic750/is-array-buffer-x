@@ -40,7 +40,7 @@ if (hasABuf) {
  */
 
 
-export default function isArrayBuffer(object) {
+var isArrayBuffer = function isArrayBuffer(object) {
   if (hasABuf === false || isObjectLike(object) === false) {
     return false;
   }
@@ -51,6 +51,8 @@ export default function isArrayBuffer(object) {
 
   var result = attempt.call(object, bLength);
   return result.threw === false && typeof result.value === 'number';
-}
+};
+
+export default isArrayBuffer;
 
 //# sourceMappingURL=is-array-buffer-x.esm.js.map
