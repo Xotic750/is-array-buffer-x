@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-24T01:04:29.501Z",
+  "date": "2019-07-24T17:06:45.605Z",
   "describe": "",
   "description": "Detect whether or not an object is an ArrayBuffer.",
   "file": "is-array-buffer-x.js",
   "hash": "1e86157b96d0a43aa19d",
   "license": "MIT",
-  "version": "2.0.7"
+  "version": "2.0.8"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
