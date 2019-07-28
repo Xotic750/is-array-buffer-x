@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-27T22:04:21.369Z",
+  "date": "2019-07-28T23:41:47.564Z",
   "describe": "",
   "description": "Detect whether or not an object is an ArrayBuffer.",
   "file": "is-array-buffer-x.js",
-  "hash": "6832770bcf99fe2538a7",
+  "hash": "85a122a785237dfb8667",
   "license": "MIT",
   "version": "2.0.12"
 }
@@ -1888,9 +1888,6 @@ var gOPS = $getOwnPropertyDescriptor;
 
 
 // CONCATENATED MODULE: ./dist/is-array-buffer-x.esm.js
-var is_array_buffer_x_esm_this = undefined;
-
-function is_array_buffer_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
 
@@ -1899,28 +1896,27 @@ function is_array_buffer_x_esm_newArrowCheck(innerThis, boundThis) { if (innerTh
 
 var hasABuf = typeof ArrayBuffer === 'function';
 var aBufTag = '[object ArrayBuffer]';
-var bLength = false;
 
-if (hasABuf) {
-  if (has_to_string_tag_x_esm) {
-    /* eslint-disable-next-line compat/compat */
-    var is_array_buffer_x_esm_descriptor = object_get_own_property_descriptor_x_esm(ArrayBuffer.prototype, 'byteLength');
+var is_array_buffer_x_esm_getBlength = function getBlength() {
+  /* eslint-disable-next-line compat/compat */
+  var descriptor = object_get_own_property_descriptor_x_esm(ArrayBuffer.prototype, 'byteLength');
 
-    if (is_array_buffer_x_esm_descriptor && typeof is_array_buffer_x_esm_descriptor.get === 'function') {
-      var is_array_buffer_x_esm_res = attempt_x_esm(function () {
-        is_array_buffer_x_esm_newArrowCheck(this, is_array_buffer_x_esm_this);
+  if (descriptor && typeof descriptor.get === 'function') {
+    var resBuf = attempt_x_esm(function attemptee() {
+      /* eslint-disable-next-line compat/compat */
+      return new ArrayBuffer(4);
+    });
 
-        /* eslint-disable-next-line compat/compat */
-        return new ArrayBuffer(4);
-      }.bind(undefined));
-
-      if (is_array_buffer_x_esm_res.threw === false && is_object_like_x_esm(is_array_buffer_x_esm_res.value)) {
-        is_array_buffer_x_esm_res = attempt_x_esm.call(is_array_buffer_x_esm_res.value, is_array_buffer_x_esm_descriptor.get);
-        bLength = is_array_buffer_x_esm_res.threw === false && typeof is_array_buffer_x_esm_res.value === 'number' && is_array_buffer_x_esm_descriptor.get;
-      }
+    if (resBuf.threw === false && is_object_like_x_esm(resBuf.value)) {
+      var resGet = attempt_x_esm.call(resBuf.value, descriptor.get);
+      return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
     }
   }
-}
+
+  return null;
+};
+
+var bLength = hasABuf && has_to_string_tag_x_esm ? is_array_buffer_x_esm_getBlength() : null;
 /**
  * Determine if an `object` is an `ArrayBuffer`.
  *
@@ -1929,13 +1925,12 @@ if (hasABuf) {
  *  else false`.
  */
 
-
 var is_array_buffer_x_esm_isArrayBuffer = function isArrayBuffer(object) {
   if (hasABuf === false || is_object_like_x_esm(object) === false) {
     return false;
   }
 
-  if (bLength === false) {
+  if (to_boolean_x_esm(bLength) === false) {
     return to_string_tag_x_esm(object) === aBufTag;
   }
 

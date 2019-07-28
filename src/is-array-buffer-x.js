@@ -3,29 +3,32 @@ import isObjectLike from 'is-object-like-x';
 import hasToStringTag from 'has-to-string-tag-x';
 import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import toStringTag from 'to-string-tag-x';
+import toBoolean from 'to-boolean-x';
 
 const hasABuf = typeof ArrayBuffer === 'function';
 const aBufTag = '[object ArrayBuffer]';
-let bLength = false;
 
-if (hasABuf) {
-  if (hasToStringTag) {
-    /* eslint-disable-next-line compat/compat */
-    const descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
+const getBlength = function getBlength() {
+  /* eslint-disable-next-line compat/compat */
+  const descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
 
-    if (descriptor && typeof descriptor.get === 'function') {
-      let res = attempt(() => {
-        /* eslint-disable-next-line compat/compat */
-        return new ArrayBuffer(4);
-      });
+  if (descriptor && typeof descriptor.get === 'function') {
+    const resBuf = attempt(function attemptee() {
+      /* eslint-disable-next-line compat/compat */
+      return new ArrayBuffer(4);
+    });
 
-      if (res.threw === false && isObjectLike(res.value)) {
-        res = attempt.call(res.value, descriptor.get);
-        bLength = res.threw === false && typeof res.value === 'number' && descriptor.get;
-      }
+    if (resBuf.threw === false && isObjectLike(resBuf.value)) {
+      const resGet = attempt.call(resBuf.value, descriptor.get);
+
+      return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
     }
   }
-}
+
+  return null;
+};
+
+const bLength = hasABuf && hasToStringTag ? getBlength() : null;
 
 /**
  * Determine if an `object` is an `ArrayBuffer`.
@@ -39,7 +42,7 @@ const isArrayBuffer = function isArrayBuffer(object) {
     return false;
   }
 
-  if (bLength === false) {
+  if (toBoolean(bLength) === false) {
     return toStringTag(object) === aBufTag;
   }
 

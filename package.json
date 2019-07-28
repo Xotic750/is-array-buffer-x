@@ -53,6 +53,7 @@
     "has-to-string-tag-x": "^2.0.22",
     "is-object-like-x": "^2.0.25",
     "object-get-own-property-descriptor-x": "^4.0.17",
+    "to-boolean-x": "^2.0.24",
     "to-string-tag-x": "^2.0.26"
   },
   "devDependencies": {

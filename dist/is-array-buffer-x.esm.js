@@ -1,36 +1,32 @@
-var _this = this;
-
-function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
-
 import attempt from 'attempt-x';
 import isObjectLike from 'is-object-like-x';
 import hasToStringTag from 'has-to-string-tag-x';
 import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import toStringTag from 'to-string-tag-x';
+import toBoolean from 'to-boolean-x';
 var hasABuf = typeof ArrayBuffer === 'function';
 var aBufTag = '[object ArrayBuffer]';
-var bLength = false;
 
-if (hasABuf) {
-  if (hasToStringTag) {
-    /* eslint-disable-next-line compat/compat */
-    var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
+var getBlength = function getBlength() {
+  /* eslint-disable-next-line compat/compat */
+  var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
 
-    if (descriptor && typeof descriptor.get === 'function') {
-      var res = attempt(function () {
-        _newArrowCheck(this, _this);
+  if (descriptor && typeof descriptor.get === 'function') {
+    var resBuf = attempt(function attemptee() {
+      /* eslint-disable-next-line compat/compat */
+      return new ArrayBuffer(4);
+    });
 
-        /* eslint-disable-next-line compat/compat */
-        return new ArrayBuffer(4);
-      }.bind(this));
-
-      if (res.threw === false && isObjectLike(res.value)) {
-        res = attempt.call(res.value, descriptor.get);
-        bLength = res.threw === false && typeof res.value === 'number' && descriptor.get;
-      }
+    if (resBuf.threw === false && isObjectLike(resBuf.value)) {
+      var resGet = attempt.call(resBuf.value, descriptor.get);
+      return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
     }
   }
-}
+
+  return null;
+};
+
+var bLength = hasABuf && hasToStringTag ? getBlength() : null;
 /**
  * Determine if an `object` is an `ArrayBuffer`.
  *
@@ -39,13 +35,12 @@ if (hasABuf) {
  *  else false`.
  */
 
-
 var isArrayBuffer = function isArrayBuffer(object) {
   if (hasABuf === false || isObjectLike(object) === false) {
     return false;
   }
 
-  if (bLength === false) {
+  if (toBoolean(bLength) === false) {
     return toStringTag(object) === aBufTag;
   }
 
