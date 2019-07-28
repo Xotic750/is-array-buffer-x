@@ -7,23 +7,24 @@ import toBoolean from 'to-boolean-x';
 var hasABuf = typeof ArrayBuffer === 'function';
 var aBufTag = '[object ArrayBuffer]';
 
-var getBlength = function getBlength() {
-  /* eslint-disable-next-line compat/compat */
-  var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
+var getGetter = function getGetter(descriptor) {
+  var resBuf = attempt(function attemptee() {
+    /* eslint-disable-next-line compat/compat */
+    return new ArrayBuffer(4);
+  });
 
-  if (descriptor && typeof descriptor.get === 'function') {
-    var resBuf = attempt(function attemptee() {
-      /* eslint-disable-next-line compat/compat */
-      return new ArrayBuffer(4);
-    });
-
-    if (resBuf.threw === false && isObjectLike(resBuf.value)) {
-      var resGet = attempt.call(resBuf.value, descriptor.get);
-      return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
-    }
+  if (resBuf.threw === false && isObjectLike(resBuf.value)) {
+    var resGet = attempt.call(resBuf.value, descriptor.get);
+    return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
   }
 
   return null;
+};
+
+var getBlength = function getBlength() {
+  /* eslint-disable-next-line compat/compat */
+  var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
+  return descriptor && typeof descriptor.get === 'function' ? getGetter(descriptor) : null;
 };
 
 var bLength = hasABuf && hasToStringTag ? getBlength() : null;

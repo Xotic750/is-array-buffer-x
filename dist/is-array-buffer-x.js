@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-07-28T23:41:47.564Z",
+  "date": "2019-07-28T23:54:52.782Z",
   "describe": "",
   "description": "Detect whether or not an object is an ArrayBuffer.",
   "file": "is-array-buffer-x.js",
-  "hash": "85a122a785237dfb8667",
+  "hash": "ad3f23eae9148bd8dbed",
   "license": "MIT",
   "version": "2.0.12"
 }
@@ -1897,23 +1897,24 @@ var gOPS = $getOwnPropertyDescriptor;
 var hasABuf = typeof ArrayBuffer === 'function';
 var aBufTag = '[object ArrayBuffer]';
 
-var is_array_buffer_x_esm_getBlength = function getBlength() {
-  /* eslint-disable-next-line compat/compat */
-  var descriptor = object_get_own_property_descriptor_x_esm(ArrayBuffer.prototype, 'byteLength');
+var is_array_buffer_x_esm_getGetter = function getGetter(descriptor) {
+  var resBuf = attempt_x_esm(function attemptee() {
+    /* eslint-disable-next-line compat/compat */
+    return new ArrayBuffer(4);
+  });
 
-  if (descriptor && typeof descriptor.get === 'function') {
-    var resBuf = attempt_x_esm(function attemptee() {
-      /* eslint-disable-next-line compat/compat */
-      return new ArrayBuffer(4);
-    });
-
-    if (resBuf.threw === false && is_object_like_x_esm(resBuf.value)) {
-      var resGet = attempt_x_esm.call(resBuf.value, descriptor.get);
-      return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
-    }
+  if (resBuf.threw === false && is_object_like_x_esm(resBuf.value)) {
+    var resGet = attempt_x_esm.call(resBuf.value, descriptor.get);
+    return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
   }
 
   return null;
+};
+
+var is_array_buffer_x_esm_getBlength = function getBlength() {
+  /* eslint-disable-next-line compat/compat */
+  var descriptor = object_get_own_property_descriptor_x_esm(ArrayBuffer.prototype, 'byteLength');
+  return descriptor && typeof descriptor.get === 'function' ? is_array_buffer_x_esm_getGetter(descriptor) : null;
 };
 
 var bLength = hasABuf && has_to_string_tag_x_esm ? is_array_buffer_x_esm_getBlength() : null;

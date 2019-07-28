@@ -8,24 +8,26 @@ import toBoolean from 'to-boolean-x';
 const hasABuf = typeof ArrayBuffer === 'function';
 const aBufTag = '[object ArrayBuffer]';
 
+const getGetter = function getGetter(descriptor) {
+  const resBuf = attempt(function attemptee() {
+    /* eslint-disable-next-line compat/compat */
+    return new ArrayBuffer(4);
+  });
+
+  if (resBuf.threw === false && isObjectLike(resBuf.value)) {
+    const resGet = attempt.call(resBuf.value, descriptor.get);
+
+    return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
+  }
+
+  return null;
+};
+
 const getBlength = function getBlength() {
   /* eslint-disable-next-line compat/compat */
   const descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
 
-  if (descriptor && typeof descriptor.get === 'function') {
-    const resBuf = attempt(function attemptee() {
-      /* eslint-disable-next-line compat/compat */
-      return new ArrayBuffer(4);
-    });
-
-    if (resBuf.threw === false && isObjectLike(resBuf.value)) {
-      const resGet = attempt.call(resBuf.value, descriptor.get);
-
-      return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
-    }
-  }
-
-  return null;
+  return descriptor && typeof descriptor.get === 'function' ? getGetter(descriptor) : null;
 };
 
 const bLength = hasABuf && hasToStringTag ? getBlength() : null;
