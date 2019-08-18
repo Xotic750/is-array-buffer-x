@@ -51,9 +51,10 @@
   },
   "dependencies": {
     "attempt-x": "^2.1.0",
+    "util-get-getter-x": "^1.0.0",
     "has-to-string-tag-x": "^2.1.0",
     "is-object-like-x": "^2.1.0",
-    "object-get-own-property-descriptor-x": "^4.1.0",
+    "simple-call-x": "^1.0.1",
     "to-boolean-x": "^2.1.0",
     "to-string-tag-x": "^2.1.0"
   },

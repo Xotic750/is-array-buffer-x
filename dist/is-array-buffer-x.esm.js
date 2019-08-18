@@ -1,33 +1,23 @@
 import attempt from 'attempt-x';
 import isObjectLike from 'is-object-like-x';
 import hasToStringTag from 'has-to-string-tag-x';
-import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import toStringTag from 'to-string-tag-x';
 import toBoolean from 'to-boolean-x';
+import call from 'simple-call-x';
+import getGetter from 'util-get-getter-x';
 var hasABuf = typeof ArrayBuffer === 'function';
 var aBufTag = '[object ArrayBuffer]';
 
-var getGetter = function getGetter(descriptor) {
-  var resBuf = attempt(function attemptee() {
-    /* eslint-disable-next-line compat/compat */
-    return new ArrayBuffer(4);
-  });
-
-  if (resBuf.threw === false && isObjectLike(resBuf.value)) {
-    var resGet = attempt.call(resBuf.value, descriptor.get);
-    return resGet.threw === false && typeof resGet.value === 'number' && descriptor.get;
-  }
-
-  return null;
+var validator = function validator(value) {
+  return typeof value === 'number';
 };
 
-var getBlength = function getBlength() {
+var creator = function creator() {
   /* eslint-disable-next-line compat/compat */
-  var descriptor = getOwnPropertyDescriptor(ArrayBuffer.prototype, 'byteLength');
-  return descriptor && typeof descriptor.get === 'function' ? getGetter(descriptor) : null;
+  return new ArrayBuffer(4);
 };
 
-var bLength = hasABuf && hasToStringTag ? getBlength() : null;
+var byteLength = hasABuf && hasToStringTag ? getGetter(creator, 'byteLength', validator) : null;
 /**
  * Determine if an `object` is an `ArrayBuffer`.
  *
@@ -41,12 +31,14 @@ var isArrayBuffer = function isArrayBuffer(object) {
     return false;
   }
 
-  if (toBoolean(bLength) === false) {
+  if (toBoolean(byteLength) === false) {
     return toStringTag(object) === aBufTag;
   }
 
-  var result = attempt.call(object, bLength);
-  return result.threw === false && typeof result.value === 'number';
+  var result = attempt(function attemptee() {
+    return call(byteLength, object);
+  });
+  return result.threw === false && validator(result.value);
 };
 
 export default isArrayBuffer;
