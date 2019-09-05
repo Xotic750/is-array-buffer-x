@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2015-2017",
-  "date": "2019-08-30T22:40:03.409Z",
+  "date": "2019-09-05T00:06:23.686Z",
   "describe": "",
   "description": "Detect whether or not an object is an ArrayBuffer.",
   "file": "is-array-buffer-x.js",
